@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sampleprojectforyara.data_movie.Api;
 import com.example.sampleprojectforyara.data_movie.adapter;
 import com.example.sampleprojectforyara.model.RetrofitGetResponse;
+import com.example.sampleprojectforyara.model.search;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     private adapter recyclerAdapter;
     private ProgressDialog progressDialog;
-    private List<RetrofitGetResponse> responseList;
+    private search responseList;
     private String baseUrl;
 
     @Override
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView_MainActivity);
-        baseUrl = "http://www.omdbapi.com";
+        baseUrl = "http://www.omdbapi.com/";
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         recyclerAdapter = new adapter(this, responseList);
@@ -90,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         Api service = retrofit.create(Api.class);
-        Call<List<RetrofitGetResponse>> call = service.GetEmployeeData();
+        Call<search> call = service.GetEmployeeData("batman");
         //calling the api
-        call.enqueue(new Callback<List<RetrofitGetResponse>>() {
+        call.enqueue(new Callback<search>() {
             @Override
-            public void onResponse(Call<List<RetrofitGetResponse>> call, Response<List<RetrofitGetResponse>> response) {
+            public void onResponse(Call<search> call, Response<search> response) {
                 //hiding progress dialog
                 progressDialog.dismiss();
                 //if there is no error
@@ -103,9 +104,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<RetrofitGetResponse>> call, Throwable t) {
+            public void onFailure(Call<search> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+
             }
         });
 
